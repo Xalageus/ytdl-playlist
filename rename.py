@@ -255,6 +255,12 @@ def createm3u8(videos):
 
     return videos
 
+def reverseVideos(videos):
+    """Reverses an object of videos with the last video becoming 
+    the first"""
+
+    return videos[::-1]
+
 #End Functions--
 
 #Begin Main--
