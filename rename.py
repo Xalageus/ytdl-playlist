@@ -236,7 +236,7 @@ def generatem3u8(playlistData, vlc):
 
     return header + data
 
-def createm3u8(videos):
+def createm3u8(videos, vlc, filename):
     """Write a playlist m3u8 to file"""
 
     ple = []
@@ -245,13 +245,16 @@ def createm3u8(videos):
         video.length = getVideoLength(video.video)
         ple.append({'file' : video.video, 'length' : video.length,})
 
-    file = io.open("playlist.m3u8", "w", encoding="utf-8")
-    file.write(generatem3u8(ple, False))
-    file.close
+    if vlc:
+        file = io.open(filename, "w", encoding="utf-8")
+        file.write(generatem3u8(ple, True))
+        file.close
+    else:
+        file = io.open(filename, "w", encoding="utf-8")
+        file.write(generatem3u8(ple, False))
+        file.close
 
-    file = io.open("playlist-vlc.m3u8", "w", encoding="utf-8")
-    file.write(generatem3u8(ple, True))
-    file.close
+    
 
     return videos
 
@@ -281,6 +284,9 @@ endTime = datetime.datetime.now()
 print("Took " + str((endTime - startTime).total_seconds()) + " seconds")
 print("Writing parse to file...")
 exportParse(videos, startTime, endTime)
-createm3u8(videos)
+createm3u8(videos, False, "playlist.m3u8")
+createm3u8(videos, True, "playlist-vlc.m3u8")
+createm3u8(reverseVideos(videos), False, "playlist-reversed.m3u8")
+createm3u8(reverseVideos(videos), True, "playlist-reversed-vlc.m3u8")
 
 #End Main--
