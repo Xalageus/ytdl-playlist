@@ -38,8 +38,9 @@ class Video(object):
 
 #Begin Functions--
 
-# Remove 0s in array
 def removeZeros(arr):
+    """Remove 0s in a array"""
+
     count = 0
 
     for item in arr:
@@ -55,16 +56,18 @@ def removeZeros(arr):
 
     return newArr
 
-# Print list of ids from a playlist json
 def printIds(playlist):
+    """Print list of ids from a playlist json"""
+
     i = 0
 
     while i < len(playlist['entries']):
         print(str(i + 1) + ": " + playlist['entries'][i]['id'])
         i += 1
 
-# Get array of ids from a playlist json
 def getIds(playlist):
+    """Get array of ids from a playlist json"""
+
     ids = [0] * len(playlist['entries'])
     i = 0
 
@@ -74,8 +77,9 @@ def getIds(playlist):
 
     return ids
 
-# Get array of files of a certain filetype(s)
 def getRelevantFiles(files, TYPE):
+    """Get array of files of a certain filetype(s)"""
+
     relevantFiles = [0] * len(files)
     i = 0
 
@@ -86,8 +90,9 @@ def getRelevantFiles(files, TYPE):
 
     return relevantFiles
 
-# Compare filename with given id assuming standard youtube-dl naming
 def stdCompareId(id, file, type):
+    """Compare filename with given id assuming standard youtube-dl naming"""
+
     typeC = False
     i = 0
 
@@ -106,8 +111,9 @@ def stdCompareId(id, file, type):
     else:
         return False
 
-# Search through files and associate an id
 def getFiles(id, files):
+    """Search through files and associate an id"""
+
     found = False
     fail = False
     i = 0
@@ -128,8 +134,9 @@ def getFiles(id, files):
 
     return video
 
-# Export videos object data to .txt
 def exportParse(videos, startTime, endTime):
+    """Export videos object data to .txt"""
+
     export = io.open("export.txt", "w", encoding="utf-8")
     i = 1
 
@@ -145,8 +152,9 @@ def exportParse(videos, startTime, endTime):
 
     export.close()
 
-# Calls a ffprobe subprocess to get length of a video file
 def getVideoLength(video):
+    """Calls a ffprobe subprocess to get length of a video file"""
+    
     print("Getting length for " + video + " ...", end=' ')
 
     length = subprocess.run(["ffprobe",
@@ -164,8 +172,9 @@ def getVideoLength(video):
     print(str((float(length.stdout))) + " seconds")
     return float(length.stdout)
 
-# Adds up lengths to get total length in float
 def calcTotalLength(playlistData):
+    """Adds up lengths to get total length in float"""
+
     totalLength = 0.0
 
     for di in playlistData:
@@ -173,8 +182,9 @@ def calcTotalLength(playlistData):
 
     return totalLength
 
-# Converts "\" in a string to "/"
 def reverseSlash(string):
+    """Converts '\\\\' in a string to '/'"""
+
     newString = ""
 
     for c in string:
@@ -185,8 +195,9 @@ def reverseSlash(string):
 
     return newString
 
-# Converts a space in a string to "%20"
 def URIEncode(string):
+    """Converts a space in a string to '%20'"""
+
     newString = ""
 
     for c in string:
@@ -197,9 +208,10 @@ def URIEncode(string):
 
     return newString
 
-# Create header and data for m3u8 playlist with differences between a
-# vlc compatible version or not
 def generatem3u8(playlistData, vlc):
+    """Create header and data for m3u8 playlist with differences between a 
+    vlc compatible version or not"""
+
     header = ""
     data = ""
 
@@ -224,8 +236,9 @@ def generatem3u8(playlistData, vlc):
 
     return header + data
 
-# Write a playlist m3u8 to file
 def createm3u8(videos):
+    """Write a playlist m3u8 to file"""
+
     ple = []
 
     for video in videos:
