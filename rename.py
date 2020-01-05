@@ -145,6 +145,7 @@ def exportParse(videos, startTime, endTime):
 
     export.close()
 
+# Calls a ffprobe subprocess to get length of a video file
 def getVideoLength(video):
     print("Getting length for " + video + " ...", end=' ')
 
@@ -163,6 +164,7 @@ def getVideoLength(video):
     print(str((float(length.stdout))) + " seconds")
     return float(length.stdout)
 
+# Adds up lengths to get total length in float
 def calcTotalLength(playlistData):
     totalLength = 0.0
 
@@ -171,6 +173,7 @@ def calcTotalLength(playlistData):
 
     return totalLength
 
+# Converts "\" in a string to "/"
 def reverseSlash(string):
     newString = ""
 
@@ -182,6 +185,7 @@ def reverseSlash(string):
 
     return newString
 
+# Converts a space in a string to "%20"
 def URIEncode(string):
     newString = ""
 
@@ -193,6 +197,8 @@ def URIEncode(string):
 
     return newString
 
+# Create header and data for m3u8 playlist with differences between a
+# vlc compatible version or not
 def generatem3u8(playlistData, vlc):
     header = ""
     data = ""
@@ -218,6 +224,7 @@ def generatem3u8(playlistData, vlc):
 
     return header + data
 
+# Write a playlist m3u8 to file
 def createm3u8(videos):
     ple = []
 
