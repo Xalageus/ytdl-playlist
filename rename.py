@@ -33,6 +33,13 @@ class Video(object):
     def __init__(self, id):
         self.id = id
         self.fail = False
+        self.video = None
+        self.subs = None
+        self.annotations = None
+        self.description = None
+        self.info = None
+        self.thumbnail = None
+        self.length = None
 
 #End Classes--
 
@@ -236,13 +243,23 @@ def generatem3u8(playlistData, vlc):
 
     return header + data
 
+def checkLengths(videos):
+    """Check an array of Videos for missing lengths"""
+
+    for video in videos:
+        if video.length is None:
+            return True
+
+    return False
+
 def createm3u8(videos, vlc, filename):
     """Write a playlist m3u8 to file"""
 
     ple = []
 
     for video in videos:
-        video.length = getVideoLength(video.video)
+        if(video.length is None):
+            video.length = getVideoLength(video.video)
         ple.append({'file' : video.video, 'length' : video.length,})
 
     if vlc:
@@ -253,8 +270,6 @@ def createm3u8(videos, vlc, filename):
         file = io.open(filename, "w", encoding="utf-8")
         file.write(generatem3u8(ple, False))
         file.close
-
-    
 
     return videos
 
@@ -284,7 +299,7 @@ endTime = datetime.datetime.now()
 print("Took " + str((endTime - startTime).total_seconds()) + " seconds")
 print("Writing parse to file...")
 exportParse(videos, startTime, endTime)
-createm3u8(videos, False, "playlist.m3u8")
+videos = createm3u8(videos, False, "playlist.m3u8")
 createm3u8(videos, True, "playlist-vlc.m3u8")
 createm3u8(reverseVideos(videos), False, "playlist-reversed.m3u8")
 createm3u8(reverseVideos(videos), True, "playlist-reversed-vlc.m3u8")
